@@ -1,0 +1,63 @@
+<svg width="1200" height="1200" viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe"/>
+      <stop offset="100%" style="stop-color:#00f2fe"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="1200" fill="url(#bgGrad)"/>
+
+  <!-- Logo centered -->
+  <g transform="translate(600, 600)">
+    <!-- Outer Hexagon -->
+    <path d="M 0 -250 L 216 -125 L 216 125 L 0 250 L -216 125 L -216 -125 Z"
+          fill="none"
+          stroke="white"
+          stroke-width="20"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          opacity="0.9"/>
+
+    <!-- Inner Hexagon -->
+    <path d="M 0 -200 L 173 -100 L 173 100 L 0 200 L -173 100 L -173 -100 Z"
+          fill="none"
+          stroke="url(#accentGrad)"
+          stroke-width="15"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          opacity="0.8"/>
+
+    <!-- M Letter -->
+    <path d="M -100 -50 L -100 100 M -100 -50 L 0 25 M 0 25 L 100 -50 M 100 -50 L 100 100"
+          stroke="white"
+          stroke-width="30"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          fill="none"/>
+
+    <!-- Corner Dots -->
+    <circle cx="0" cy="-250" r="15" fill="white" opacity="0.8"/>
+    <circle cx="216" cy="-125" r="15" fill="white" opacity="0.8"/>
+    <circle cx="216" cy="125" r="15" fill="white" opacity="0.8"/>
+    <circle cx="0" cy="250" r="15" fill="white" opacity="0.8"/>
+    <circle cx="-216" cy="125" r="15" fill="white" opacity="0.8"/>
+    <circle cx="-216" cy="-125" r="15" fill="white" opacity="0.8"/>
+
+    <!-- Center Pulse -->
+    <circle cx="0" cy="0" r="20" fill="white" opacity="0.9"/>
+
+    <!-- Text -->
+    <text x="0" y="380" font-family="'Space Grotesk', sans-serif" font-size="120" font-weight="700" fill="white" text-anchor="middle">
+      MoCell
+    </text>
+    <text x="0" y="440" font-family="'Inter', sans-serif" font-size="40" font-weight="500" fill="rgba(255,255,255,0.9)" text-anchor="middle" letter-spacing="8">
+      IT SOLUTIONS
+    </text>
+  </g>
+</svg>

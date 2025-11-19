@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<!--
+    WEB3FORMS INTEGRATION - EASIEST OPTION
+
+    Setup Steps:
+    1. Go to https://web3forms.com
+    2. Enter your email address
+    3. Copy the Access Key they email you
+    4. Replace YOUR_ACCESS_KEY_HERE below with your actual key
+    5. That's it! Emails will come to your inbox
+
+    Features:
+    - Free for up to 250 submissions/month
+    - No signup required initially
+    - Spam protection included
+    - Auto-response option
+    - File uploads supported
+-->
+
+<!-- Copy this form code and replace the existing form in index.html (lines 343-379) -->
+
+<form class="contact-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+
+    <!-- Replace with your actual Access Key from web3forms.com -->
+    <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+
+    <!-- Optional: Redirect after submission -->
+    <input type="hidden" name="redirect" value="https://yourdomain.com/thank-you.html">
+
+    <!-- Optional: Custom subject line -->
+    <input type="hidden" name="subject" value="New Contact Form Submission from MoCell Website">
+
+    <!-- Optional: From name -->
+    <input type="hidden" name="from_name" value="MoCell Website">
+
+    <!-- Honeypot Spam Protection -->
+    <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+    <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required placeholder="John Doe">
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required placeholder="john@example.com">
+    </div>
+
+    <div class="form-group">
+        <label for="company">Company (Optional)</label>
+        <input type="text" id="company" name="company" placeholder="Your Company">
+    </div>
+
+    <div class="form-group">
+        <label for="service">Service Interested In</label>
+        <select id="service" name="service" required>
+            <option value="">Select a service</option>
+            <option value="software-development">Software Development</option>
+            <option value="integration">System Integration</option>
+            <option value="deployment">Deployment & DevOps</option>
+            <option value="security">Cybersecurity & VAPT</option>
+            <option value="cloud">Cloud Solutions</option>
+            <option value="consulting">IT Consulting</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="message">Project Details</label>
+        <textarea id="message" name="message" rows="4" required placeholder="Tell us about your project..."></textarea>
+    </div>
+
+    <button type="submit" class="btn-primary btn-large btn-block">
+        Send Message
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M17.5 2.5L8.75 11.25M17.5 2.5l-5.833 15L8.75 11.25M17.5 2.5L2.5 8.333l6.25 2.917" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <div id="result" style="margin-top: 20px; padding: 15px; border-radius: 8px; display: none;"></div>
+</form>
+
+<script>
+    const form = document.getElementById('contactForm');
+    const result = document.getElementById('result');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const object = Object.fromEntries(formData);
+        const json = JSON.stringify(object);
+
+        result.style.display = 'block';
+        result.innerHTML = "Sending...";
+        result.style.background = '#e0e7ff';
+        result.style.color = '#4338ca';
+
+        fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: json
+        })
+        .then(async (response) => {
+            let json = await response.json();
+            if (response.status == 200) {
+                result.innerHTML = "✅ Message sent successfully! We'll get back to you soon.";
+                result.style.background = '#d1fae5';
+                result.style.color = '#065f46';
+                form.reset();
+            } else {
+                console.log(response);
+                result.innerHTML = json.message;
+                result.style.background = '#fee2e2';
+                result.style.color = '#991b1b';
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            result.innerHTML = "Something went wrong! Please try again.";
+            result.style.background = '#fee2e2';
+            result.style.color = '#991b1b';
+        })
+        .then(function() {
+            setTimeout(() => {
+                result.style.display = 'none';
+            }, 5000);
+        });
+    });
+</script>

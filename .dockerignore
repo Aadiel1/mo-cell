@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment files
+.env.local
+.env.*.local
+
+# Development files
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# Documentation
+README.md
+QUICK-START.md
+*.md
+!package.json
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+test/
+*.test.js
+__tests__/
+
+# Build artifacts
+dist/
+build/

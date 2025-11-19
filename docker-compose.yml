@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  # Node.js Application
+  mocell-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mocell-app
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    networks:
+      - mocell-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    volumes:
+      # Mount logs directory (optional)
+      - ./logs:/app/logs
+
+  # Nginx Reverse Proxy (optional - uncomment to use)
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: mocell-nginx
+  #   restart: unless-stopped
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+  #     # Uncomment for SSL certificates
+  #     # - ./ssl:/etc/nginx/ssl:ro
+  #   networks:
+  #     - mocell-network
+  #   depends_on:
+  #     - mocell-app
+
+networks:
+  mocell-network:
+    driver: bridge
+
+# Volumes for persistent data (optional)
+volumes:
+  logs:
+    driver: local

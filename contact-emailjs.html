@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<!--
+    EMAILJS INTEGRATION - MOST CUSTOMIZABLE
+
+    Setup Steps:
+    1. Go to https://www.emailjs.com/
+    2. Sign up for free account (300 emails/month free)
+    3. Create an Email Service (Gmail, Outlook, etc.)
+    4. Create an Email Template (see template below)
+    5. Get your Public Key, Service ID, and Template ID
+    6. Replace the placeholders in the script below
+
+    Features:
+    - 300 free emails/month
+    - Custom email templates
+    - Auto-reply option
+    - Multiple email services
+    - Great documentation
+-->
+
+<!-- Add this before closing </body> tag in index.html -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+    // Initialize EmailJS with your Public Key
+    (function(){
+        emailjs.init("YOUR_PUBLIC_KEY"); // Get from EmailJS dashboard
+    })();
+</script>
+
+<!-- Replace the existing form in index.html with this -->
+<form class="contact-form" id="contactForm">
+    <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="user_name" required placeholder="John Doe">
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="user_email" required placeholder="john@example.com">
+    </div>
+
+    <div class="form-group">
+        <label for="company">Company (Optional)</label>
+        <input type="text" id="company" name="company" placeholder="Your Company">
+    </div>
+
+    <div class="form-group">
+        <label for="service">Service Interested In</label>
+        <select id="service" name="service" required>
+            <option value="">Select a service</option>
+            <option value="Software Development">Software Development</option>
+            <option value="System Integration">System Integration</option>
+            <option value="Deployment & DevOps">Deployment & DevOps</option>
+            <option value="Cybersecurity & VAPT">Cybersecurity & VAPT</option>
+            <option value="Cloud Solutions">Cloud Solutions</option>
+            <option value="IT Consulting">IT Consulting</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="message">Project Details</label>
+        <textarea id="message" name="message" rows="4" required placeholder="Tell us about your project..."></textarea>
+    </div>
+
+    <button type="submit" class="btn-primary btn-large btn-block" id="submitBtn">
+        Send Message
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M17.5 2.5L8.75 11.25M17.5 2.5l-5.833 15L8.75 11.25M17.5 2.5L2.5 8.333l6.25 2.917" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <div id="result" style="margin-top: 20px; padding: 15px; border-radius: 8px; display: none;"></div>
+</form>
+
+<script>
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const result = document.getElementById('result');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="animation: spin 1s linear infinite;">
+                <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" stroke-dasharray="50" opacity="0.3"/>
+                <path d="M10 2a8 8 0 018 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Sending...
+        `;
+
+        // Send email using EmailJS
+        emailjs.sendForm(
+            'YOUR_SERVICE_ID',    // Get from EmailJS dashboard
+            'YOUR_TEMPLATE_ID',   // Get from EmailJS dashboard
+            this
+        )
+        .then(function(response) {
+            console.log('SUCCESS!', response.status, response.text);
+
+            // Show success message
+            result.style.display = 'block';
+            result.innerHTML = "✅ Message sent successfully! We'll get back to you within 24 hours.";
+            result.style.background = '#d1fae5';
+            result.style.color = '#065f46';
+            result.style.border = '2px solid #10b981';
+
+            // Reset form
+            form.reset();
+
+            // Reset button
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `
+                Send Message
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M17.5 2.5L8.75 11.25M17.5 2.5l-5.833 15L8.75 11.25M17.5 2.5L2.5 8.333l6.25 2.917" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            `;
+
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                result.style.display = 'none';
+            }, 5000);
+
+        }, function(error) {
+            console.log('FAILED...', error);
+
+            // Show error message
+            result.style.display = 'block';
+            result.innerHTML = "❌ Oops! Something went wrong. Please try again or email us directly at hello@mocell.tech";
+            result.style.background = '#fee2e2';
+            result.style.color = '#991b1b';
+            result.style.border = '2px solid #ef4444';
+
+            // Reset button
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `
+                Send Message
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M17.5 2.5L8.75 11.25M17.5 2.5l-5.833 15L8.75 11.25M17.5 2.5L2.5 8.333l6.25 2.917" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            `;
+        });
+    });
+</script>
+
+<style>
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+</style>
+
+<!--
+    EMAILJS EMAIL TEMPLATE
+
+    Create this template in your EmailJS dashboard:
+
+    Subject: New Contact from {{user_name}} - MoCell Website
+
+    Body:
+
+    🎯 NEW CONTACT FORM SUBMISSION
+
+    From: {{user_name}}
+    Email: {{user_email}}
+    Company: {{company}}
+    Service Interested: {{service}}
+
+    MESSAGE:
+    {{message}}
+
+    ---
+    Submitted from: MoCell Website
+    Date: {{current_date}}
+
+
+    AUTO-REPLY TEMPLATE (Optional):
+
+    Subject: Thanks for contacting MoCell!
+
+    Hi {{user_name}},
+
+    Thank you for reaching out to MoCell! We've received your inquiry about {{service}}.
+
+    Our team will review your message and get back to you within 24 hours.
+
+    In the meantime, feel free to:
+    - Check out our services: https://mocell.tech
+    - Follow us on LinkedIn: [Your LinkedIn]
+    - Email us directly: hello@mocell.tech
+
+    Best regards,
+    The MoCell Team
+
+    ---
+    This is an automated response. Please do not reply to this email.
+-->
